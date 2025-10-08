@@ -79,8 +79,23 @@ const Books = () => {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, ...updates }: any) => {
-      const { data, error } = await supabase.from("books").update(updates).eq("id", id);
-      if (error) throw error;
+      const { data: currentBook, error: fetchError } = await supabase
+        .from("books")
+        .select("total_copies, available_copies")
+        .eq("id", id)
+        .single();
+
+      if (fetchError) throw fetchError;
+      if (!currentBook) throw new Error("Book not found");
+
+      const borrowedCopies = currentBook.total_copies - currentBook.available_copies;
+      const newAvailableCopies = updates.total_copies - borrowedCopies;
+
+      const { data, error: updateError } = await supabase
+        .from("books")
+        .update({ ...updates, available_copies: newAvailableCopies })
+        .eq("id", id);
+      if (updateError) throw updateError;
       return data;
     },
     onSuccess: () => {

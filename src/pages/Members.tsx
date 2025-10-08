@@ -122,9 +122,9 @@ const Members = () => {
       isValid = false;
     }
 
-    // Phone validation: must contain only numbers
-    if (!/^\d+$/.test(formData.phone)) {
-      newErrors.phone = "Phone number must contain only digits.";
+    // Phone validation: must be exactly 11 digits
+    if (!/^\d{11}$/.test(formData.phone)) {
+      newErrors.phone = "Phone number must be exactly 11 digits.";
       isValid = false;
     }
 

@@ -78,7 +78,7 @@ CREATE TRIGGER update_members_updated_at BEFORE UPDATE ON public.members
 CREATE TRIGGER update_transactions_updated_at BEFORE UPDATE ON public.transactions
   FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
 
--- Create indexes for better performance
+-- Create indexes for better performance --
 CREATE INDEX idx_books_isbn ON public.books(isbn);
 CREATE INDEX idx_books_category ON public.books(category);
 CREATE INDEX idx_members_member_id ON public.members(member_id);
